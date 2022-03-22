@@ -1,0 +1,5 @@
+.env
+node_modules
+covarage
+coverage.out
+app

@@ -1,5 +1,6 @@
 .env
 node_modules
-covarage
+coverage
 coverage.out
 app
+.idea

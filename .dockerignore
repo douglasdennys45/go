@@ -4,3 +4,5 @@ coverage
 coverage.out
 app
 .idea
+coverage.out
+coverage.html

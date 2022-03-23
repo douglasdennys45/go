@@ -57,7 +57,7 @@ To run the project, run the following command
 To run the tests, run the following command
 
 ```bash
-  go test -cover ./... && go test -cover -coverprofile=coverage.out ./... && go tool cover -html=coverage.out -o coverage.html
+  go test -cover -coverprofile=coverage.out ./... && go tool cover -html=coverage.out -o coverage.html
 ```
 
 ## Feedback

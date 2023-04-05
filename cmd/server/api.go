@@ -9,6 +9,7 @@ import (
 	"douglasdenny45.github.com/go/internal/infrastructure/middlewares"
 	"douglasdenny45.github.com/go/pkg/env"
 	"douglasdenny45.github.com/go/pkg/logger"
+	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -27,6 +28,8 @@ func init() {
 func main() {
 	log := logger.NewLogger()
 	app := fiber.New(fiber.Config{
+		JSONEncoder: json.Marshal,
+		JSONDecoder: json.Unmarshal,
 		ErrorHandler: func(ctx *fiber.Ctx, err error) error {
 			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"message":   err.Error(),

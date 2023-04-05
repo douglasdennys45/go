@@ -1,8 +1,6 @@
+# folders
+bin
+
+# files
+api.http
 .env
-node_modules
-coverage
-coverage.out
-app
-.idea
-coverage.out
-coverage.html

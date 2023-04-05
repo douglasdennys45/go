@@ -1,14 +1,10 @@
-FROM golang:1.17-alpine as builder
-LABEL maintainer="Douglas Dennys <douglasdennys@yahoo.com>"
+FROM go:1.20-alpine3.13 AS builder
+LABEL maintainer="Douglas Dennys <douglasdennys45@gmail.com>"
 WORKDIR /app
-COPY go.mod go.sum ./
-RUN go mod download
 COPY . .
-RUN go build ./lib/infrastructure/server/app.go
+RUN go mod download && GOOS=linux CGO_ENABLED=0 go build -ldflags="-w -s" -o main ./cmd/server/api.go
 
-FROM alpine:latest
-RUN apk --no-cache add ca-certificates
-WORKDIR /root/
-COPY --from=builder /app/app .
-EXPOSE 8080
-CMD ["./app"]
+
+FROM scratch
+COPY --from=builder /app/main .
+CMD ["./main"]

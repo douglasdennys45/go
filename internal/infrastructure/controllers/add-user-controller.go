@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"time"
+
 	"douglasdenny45.github.com/go/internal/domain/services"
 	"github.com/gofiber/fiber/v2"
 )
@@ -12,20 +14,36 @@ type userDTO struct {
 }
 
 type AddUserController struct {
-	addUser services.AddUserInterface
+	Controller
+	services.AddUserInterface
 }
 
-func NewAddUserController(addUser services.AddUserInterface) Controller {
-	return &AddUserController{addUser: addUser}
+func NewAddUserController(controller Controller, addUser services.AddUserInterface) ControllerInterface {
+	return &AddUserController{controller, addUser}
 }
 
-func (controller *AddUserController) Handle(ctx *fiber.Ctx) error {
+func (controller *AddUserController) perform(ctx *fiber.Ctx) Response {
 	user := new(userDTO)
 	if err := ctx.BodyParser(user); err != nil {
-		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": err.Error()})
+		return Response{
+			Message:   err.Error(),
+			Status:    fiber.StatusInternalServerError,
+			Path:      "POST /users",
+			Timestamp: time.Now(),
+		}
 	}
-	if err := controller.addUser.Execute(user.Name, user.Email, user.Password); err != nil {
-		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": err.Error()})
+	if err := controller.Execute(user.Name, user.Email, user.Password); err != nil {
+		return Response{
+			Message:   err.Error(),
+			Status:    fiber.StatusBadRequest,
+			Path:      "POST /users",
+			Timestamp: time.Now(),
+		}
 	}
-	return ctx.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "User created successfully"})
+	return Response{
+		Message:   "User created successfully",
+		Status:    fiber.StatusCreated,
+		Path:      "POST /users",
+		Timestamp: time.Now(),
+	}
 }

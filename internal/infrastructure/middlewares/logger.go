@@ -8,7 +8,7 @@ import (
 func SetupLogger() fiber.Handler {
 	return logger.New(logger.Config{
 		Format:     "[${time}] ${status} - ${latency} ${method} ${path}\n",
-		TimeFormat: "02-12-2006",
+		TimeFormat: "UTC",
 		TimeZone:   "America/Sao_Paulo",
 	})
 }

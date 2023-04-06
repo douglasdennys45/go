@@ -5,6 +5,6 @@ import (
 	"douglasdenny45.github.com/go/internal/infrastructure/factories/domain/services"
 )
 
-func MountGetUserController() controllers.Controller {
-	return controllers.NewGetUserController(services.MountGetUser())
+func MountGetUserController(controller controllers.Controller) controllers.ControllerInterface {
+	return controllers.NewGetUserController(controller, services.MountGetUser())
 }

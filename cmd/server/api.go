@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"time"
 
+	"douglasdenny45.github.com/go/internal/infrastructure/adapters"
+	ctrl "douglasdenny45.github.com/go/internal/infrastructure/controllers"
 	"douglasdenny45.github.com/go/internal/infrastructure/database/mysql"
 	"douglasdenny45.github.com/go/internal/infrastructure/factories/infrastructure/controllers"
 	"douglasdenny45.github.com/go/internal/infrastructure/middlewares"
@@ -18,7 +20,11 @@ func init() {
 	if err != nil {
 		panic("env is nil")
 	}
-	_, err = mysql.NewMysqlConnect(env.DBDriver, env.DBDSN)
+
+	fmt.Println(env.DBDriver)
+	fmt.Println(env.DBDSN)
+	fmt.Println(env.DBPool)
+	_, err = mysql.NewMysqlConnect(env.DBDriver, env.DBDSN, env.DBPool)
 	if err != nil {
 		fmt.Println(err)
 		panic(err)
@@ -49,8 +55,9 @@ func main() {
 	app.Use(middlewares.SetupIdempotency())
 
 	users := app.Group("/users")
-	users.Post("", controllers.MountAddUserController().Handle)
-	users.Get(":id", controllers.MountGetUserController().Handle)
+	var controller ctrl.Controller
+	users.Post("", adapters.RouteAdapter(controllers.MountAddUserController(controller)))
+	users.Get(":id", adapters.RouteAdapter(controllers.MountGetUserController(controller)))
 
 	app.Use(func(ctx *fiber.Ctx) error {
 		return ctx.Status(fiber.StatusNotFound).JSON(fiber.Map{

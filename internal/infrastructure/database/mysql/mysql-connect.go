@@ -1,8 +1,8 @@
 package mysql
 
 import (
+	"context"
 	"database/sql"
-	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -11,14 +11,22 @@ var (
 	DB *sql.DB
 )
 
-func NewMysqlConnect(driver, dsn string) (*sql.DB, error) {
+func NewMysqlConnect(driver, dsn string, pool int) (*sql.DB, error) {
 	db, err := sql.Open(driver, dsn)
 	if err != nil {
 		return nil, err
 	}
-	db.SetConnMaxLifetime(time.Minute * 3)
-	db.SetMaxOpenConns(50)
-	db.SetMaxIdleConns(50)
+	db.SetConnMaxLifetime(1000)
+	db.SetMaxOpenConns(pool)
+	db.SetMaxIdleConns(pool)
 	DB = db
 	return db, nil
+}
+
+func Begin() (*sql.Tx, error) {
+	ctx, err := DB.BeginTx(context.Background(), nil)
+	if err != nil {
+		return nil, err
+	}
+	return ctx, nil
 }

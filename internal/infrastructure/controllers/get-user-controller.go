@@ -1,23 +1,38 @@
 package controllers
 
 import (
+	"time"
+
 	"douglasdenny45.github.com/go/internal/domain/services"
 	"github.com/gofiber/fiber/v2"
 )
 
 type GetUserController struct {
-	getUser services.GetUserInterface
+	Controller
+	services.GetUserInterface
 }
 
-func NewGetUserController(getUser services.GetUserInterface) Controller {
-	return &GetUserController{getUser: getUser}
+func NewGetUserController(controller Controller, getUser services.GetUserInterface) ControllerInterface {
+	return &GetUserController{controller, getUser}
 }
 
-func (controller *GetUserController) Handle(ctx *fiber.Ctx) error {
+func (controller *GetUserController) perform(ctx *fiber.Ctx) Response {
 	id := ctx.Params("id")
-	users, err := controller.getUser.Execute(id)
+	users, err := controller.Execute(id)
 	if err != nil {
-		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": err.Error()})
+		return Response{
+			Data:      nil,
+			Message:   err.Error(),
+			Status:    fiber.StatusNotFound,
+			Path:      "GET /users/" + id,
+			Timestamp: time.Now(),
+		}
 	}
-	return ctx.Status(fiber.StatusOK).JSON(users)
+	return Response{
+		Data:      users,
+		Message:   "User found successfully",
+		Status:    fiber.StatusOK,
+		Path:      "/users/" + id,
+		Timestamp: time.Now(),
+	}
 }

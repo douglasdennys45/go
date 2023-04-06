@@ -7,6 +7,7 @@ import (
 type config struct {
 	DBDSN    string `mapstructure:"DB_DSN"`
 	DBDriver string `mapstructure:"DB_DRIVER"`
+	DBPool   int    `mapstructure:"DB_POOL"`
 }
 
 func NewEnv(path string) (*config, error) {

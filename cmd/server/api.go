@@ -20,10 +20,6 @@ func init() {
 	if err != nil {
 		panic("env is nil")
 	}
-
-	fmt.Println(env.DBDriver)
-	fmt.Println(env.DBDSN)
-	fmt.Println(env.DBPool)
 	_, err = mysql.NewMysqlConnect(env.DBDriver, env.DBDSN, env.DBPool)
 	if err != nil {
 		fmt.Println(err)

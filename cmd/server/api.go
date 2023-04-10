@@ -6,7 +6,7 @@ import (
 
 	"douglasdenny45.github.com/go/internal/infrastructure/adapters"
 	ctrl "douglasdenny45.github.com/go/internal/infrastructure/controllers"
-	"douglasdenny45.github.com/go/internal/infrastructure/database/mysql"
+	"douglasdenny45.github.com/go/internal/infrastructure/database/postgres"
 	"douglasdenny45.github.com/go/internal/infrastructure/factories/infrastructure/controllers"
 	"douglasdenny45.github.com/go/internal/infrastructure/middlewares"
 	"douglasdenny45.github.com/go/pkg/env"
@@ -20,7 +20,7 @@ func init() {
 	if err != nil {
 		panic("env is nil")
 	}
-	_, err = mysql.NewMysqlConnect(env.DBDriver, env.DBDSN, env.DBPool)
+	_, err = postgres.NewPostgresConnect(env.DBDriver, env.DBDSN, env.DBPool)
 	if err != nil {
 		fmt.Println(err)
 		panic(err)

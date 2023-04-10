@@ -6,5 +6,5 @@ import (
 )
 
 func MountAddUserController(controller controllers.Controller) controllers.ControllerInterface {
-	return controllers.NewAddUserController(controller, services.MountAddUser())
+	return MountDBTransactionController(controllers.NewAddUserController(controller, services.MountAddUser()))
 }

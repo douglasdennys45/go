@@ -1,11 +1,18 @@
 package controllers
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"context"
+	"database/sql"
+
+	"github.com/gofiber/fiber/v2"
+)
 
 type DBTransaction interface {
-	Begin() error
-	Commit() error
-	Rollback() error
+	OpenTransaction(context.Context) (*sql.Tx, error)
+	Commit(*sql.Tx) error
+	Rollback(*sql.Tx) error
+	GetTX() *sql.Tx
+	GetContext() context.Context
 }
 
 type DBTransactionController struct {
@@ -13,8 +20,13 @@ type DBTransactionController struct {
 	DBTransaction
 }
 
+func NewDBTransactionController(controller ControllerInterface, transaction DBTransaction) ControllerInterface {
+	return &DBTransactionController{controller, transaction}
+}
+
 func (controller *DBTransactionController) perform(ctx *fiber.Ctx) Response {
-	if err := controller.Begin(); err != nil {
+	tx, err := controller.OpenTransaction(context.Background())
+	if err != nil {
 		return Response{
 			Message: err.Error(),
 			Status:  fiber.StatusInternalServerError,
@@ -23,7 +35,8 @@ func (controller *DBTransactionController) perform(ctx *fiber.Ctx) Response {
 	}
 	response := controller.ControllerInterface.perform(ctx)
 	if response.Status == fiber.StatusInternalServerError {
-		if err := controller.Rollback(); err != nil {
+		err := controller.Rollback(tx)
+		if err != nil {
 			return Response{
 				Message: err.Error(),
 				Status:  fiber.StatusInternalServerError,
@@ -32,7 +45,8 @@ func (controller *DBTransactionController) perform(ctx *fiber.Ctx) Response {
 		}
 		return response
 	}
-	if err := controller.Commit(); err != nil {
+	err = controller.Commit(tx)
+	if err != nil {
 		return Response{
 			Message: err.Error(),
 			Status:  fiber.StatusInternalServerError,

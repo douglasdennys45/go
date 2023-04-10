@@ -3,10 +3,10 @@ module douglasdenny45.github.com/go
 go 1.20
 
 require (
-	github.com/go-sql-driver/mysql v1.7.0
 	github.com/goccy/go-json v0.10.2
 	github.com/gofiber/fiber/v2 v2.43.0
 	github.com/google/uuid v1.3.0
+	github.com/lib/pq v1.10.7
 	github.com/spf13/viper v1.15.0
 	go.uber.org/zap v1.24.0
 )

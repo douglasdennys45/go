@@ -3,8 +3,8 @@ package postgres
 import (
 	"database/sql"
 
-	"douglasdenny45.github.com/go/internal/infrastructure/controllers"
-	"douglasdenny45.github.com/go/internal/infrastructure/database/postgres"
+	"github.com/douglasdennys45/go/internal/infrastructure/controllers"
+	"github.com/douglasdennys45/go/internal/infrastructure/database/postgres"
 )
 
 func MountPostgresConnect() *sql.DB {

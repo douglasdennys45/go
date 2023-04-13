@@ -3,8 +3,10 @@ package postgres
 import (
 	"context"
 	"database/sql"
+	"fmt"
 
-	"douglasdenny45.github.com/go/internal/infrastructure/controllers"
+	gopostgres "github.com/douglasdennys45/go-postgres"
+	"github.com/douglasdennys45/go/internal/infrastructure/controllers"
 	_ "github.com/lib/pq"
 )
 
@@ -24,37 +26,29 @@ func NewPostgreSQLConnect() controllers.DBTransaction {
 	return &PostgresConnect{}
 }
 
-func NewPostgresConnect(driver, dsn string, pool int) (*sql.DB, error) {
-	db, err := sql.Open(driver, dsn)
-	if err != nil {
-		return nil, err
-	}
-	db.SetConnMaxLifetime(1000)
-	db.SetMaxOpenConns(pool)
-	db.SetMaxIdleConns(pool)
-	DB = db
-	return db, nil
+func NewPostgresConnect(driver, dsn string, pool int) error {
+	conn := gopostgres.NewPostgresConnection()
+	fmt.Println("conn: ", conn)
+	return conn.Connect(driver, dsn, pool)
 }
 
 func (m *PostgresConnect) OpenTransaction(ctx context.Context) (*sql.Tx, error) {
-	tx, err := DB.BeginTx(ctx, nil)
-	TX = tx
-	CTX = ctx
-	return TX, err
+	transaction, err := gopostgres.NewPostgresTransaction().OpenTransaction(ctx)
+	return transaction, err
 }
 
 func (m *PostgresConnect) Commit(tx *sql.Tx) error {
-	return tx.Commit()
+	return gopostgres.NewPostgresTransaction().GetTX().Commit()
 }
 
 func (m *PostgresConnect) Rollback(tx *sql.Tx) error {
-	return tx.Rollback()
+	return gopostgres.NewPostgresTransaction().GetTX().Rollback()
 }
 
 func (m *PostgresConnect) GetTX() *sql.Tx {
-	return TX
+	return gopostgres.NewPostgresTransaction().GetTX()
 }
 
 func (m *PostgresConnect) GetContext() context.Context {
-	return CTX
+	return gopostgres.NewPostgresTransaction().GetContext()
 }

@@ -1,9 +1,8 @@
 package controllers
 
 import (
-	"time"
-
-	"douglasdenny45.github.com/go/internal/domain/services"
+	goresponse "github.com/douglasdennys45/go-response"
+	"github.com/douglasdennys45/go/internal/domain/services"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -16,23 +15,13 @@ func NewGetUserController(controller Controller, getUser services.GetUserInterfa
 	return &GetUserController{controller, getUser}
 }
 
-func (controller *GetUserController) perform(ctx *fiber.Ctx) Response {
+func (controller *GetUserController) perform(ctx *fiber.Ctx) goresponse.Response {
 	id := ctx.Params("id")
 	users, err := controller.Execute(id)
 	if err != nil {
-		return Response{
-			Data:      nil,
-			Message:   err.Error(),
-			Status:    fiber.StatusNotFound,
-			Path:      "GET /users/" + id,
-			Timestamp: time.Now(),
-		}
+		r := goresponse.NewResponse(nil, "", err.Error(), fiber.StatusNotFound, "", "POST /users/"+id)
+		return r.Response()
 	}
-	return Response{
-		Data:      users,
-		Message:   "User found successfully",
-		Status:    fiber.StatusOK,
-		Path:      "/users/" + id,
-		Timestamp: time.Now(),
-	}
+	r := goresponse.NewResponse(users, "", "User found successfully", fiber.StatusOK, "", "POST /users/"+id)
+	return r.Response()
 }

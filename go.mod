@@ -1,8 +1,10 @@
-module douglasdenny45.github.com/go
+module github.com/douglasdennys45/go
 
 go 1.20
 
 require (
+	github.com/douglasdennys45/go-postgres v0.0.1
+	github.com/douglasdennys45/go-response v0.0.1
 	github.com/goccy/go-json v0.10.2
 	github.com/gofiber/fiber/v2 v2.43.0
 	github.com/google/uuid v1.3.0

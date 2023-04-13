@@ -1,16 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"time"
 
-	"douglasdenny45.github.com/go/internal/infrastructure/adapters"
-	ctrl "douglasdenny45.github.com/go/internal/infrastructure/controllers"
-	"douglasdenny45.github.com/go/internal/infrastructure/database/postgres"
-	"douglasdenny45.github.com/go/internal/infrastructure/factories/infrastructure/controllers"
-	"douglasdenny45.github.com/go/internal/infrastructure/middlewares"
-	"douglasdenny45.github.com/go/pkg/env"
-	"douglasdenny45.github.com/go/pkg/logger"
+	"github.com/douglasdennys45/go/internal/infrastructure/adapters"
+	ctrl "github.com/douglasdennys45/go/internal/infrastructure/controllers"
+	"github.com/douglasdennys45/go/internal/infrastructure/database/postgres"
+	"github.com/douglasdennys45/go/internal/infrastructure/factories/infrastructure/controllers"
+	"github.com/douglasdennys45/go/internal/infrastructure/middlewares"
+	"github.com/douglasdennys45/go/pkg/env"
+	"github.com/douglasdennys45/go/pkg/logger"
 	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
 )
@@ -20,9 +19,8 @@ func init() {
 	if err != nil {
 		panic("env is nil")
 	}
-	_, err = postgres.NewPostgresConnect(env.DBDriver, env.DBDSN, env.DBPool)
+	err = postgres.NewPostgresConnect(env.DBDriver, env.DBDSN, env.DBPool)
 	if err != nil {
-		fmt.Println(err)
 		panic(err)
 	}
 }

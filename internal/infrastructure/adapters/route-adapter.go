@@ -1,7 +1,7 @@
 package adapters
 
 import (
-	"douglasdenny45.github.com/go/internal/infrastructure/controllers"
+	"github.com/douglasdennys45/go/internal/infrastructure/controllers"
 	"github.com/gofiber/fiber/v2"
 )
 

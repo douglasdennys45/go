@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	goresponse "github.com/douglasdennys45/go-response"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -24,34 +25,25 @@ func NewDBTransactionController(controller ControllerInterface, transaction DBTr
 	return &DBTransactionController{controller, transaction}
 }
 
-func (controller *DBTransactionController) perform(ctx *fiber.Ctx) Response {
+func (controller *DBTransactionController) perform(ctx *fiber.Ctx) goresponse.Response {
 	tx, err := controller.OpenTransaction(context.Background())
 	if err != nil {
-		return Response{
-			Message: err.Error(),
-			Status:  fiber.StatusInternalServerError,
-			Path:    "POST /users",
-		}
+		r := goresponse.NewResponse(nil, "", err.Error(), fiber.StatusInternalServerError, "", "POST /users")
+		return r.Response()
 	}
 	response := controller.ControllerInterface.perform(ctx)
 	if response.Status == fiber.StatusInternalServerError {
 		err := controller.Rollback(tx)
 		if err != nil {
-			return Response{
-				Message: err.Error(),
-				Status:  fiber.StatusInternalServerError,
-				Path:    "POST /users",
-			}
+			r := goresponse.NewResponse(nil, "", err.Error(), fiber.StatusInternalServerError, "", "POST /users")
+			return r.Response()
 		}
 		return response
 	}
 	err = controller.Commit(tx)
 	if err != nil {
-		return Response{
-			Message: err.Error(),
-			Status:  fiber.StatusInternalServerError,
-			Path:    "POST /users",
-		}
+		r := goresponse.NewResponse(nil, "", err.Error(), fiber.StatusInternalServerError, "", "POST /users")
+		return r.Response()
 	}
 	return response
 }

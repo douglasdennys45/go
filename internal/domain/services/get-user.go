@@ -1,8 +1,8 @@
 package services
 
 import (
-	"douglasdenny45.github.com/go/internal/domain/entities"
-	"douglasdenny45.github.com/go/internal/domain/repositories"
+	"github.com/douglasdennys45/go/internal/domain/entities"
+	"github.com/douglasdennys45/go/internal/domain/repositories"
 )
 
 type GetUserInterface interface {

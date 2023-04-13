@@ -3,7 +3,7 @@ package entities
 import (
 	"time"
 
-	"douglasdenny45.github.com/go/pkg/uuid"
+	"github.com/douglasdennys45/go/pkg/uuid"
 )
 
 type User struct {

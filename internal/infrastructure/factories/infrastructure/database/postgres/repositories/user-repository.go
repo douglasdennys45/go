@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	repository "douglasdenny45.github.com/go/internal/domain/repositories"
-	"douglasdenny45.github.com/go/internal/infrastructure/database/postgres/repositories"
+	repository "github.com/douglasdennys45/go/internal/domain/repositories"
+	"github.com/douglasdennys45/go/internal/infrastructure/database/postgres/repositories"
 )
 
 func MountUserRepository() repository.UserRepo {

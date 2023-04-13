@@ -1,8 +1,8 @@
 package services
 
 import (
-	"douglasdenny45.github.com/go/internal/domain/services"
-	"douglasdenny45.github.com/go/internal/infrastructure/factories/infrastructure/database/postgres/repositories"
+	"github.com/douglasdennys45/go/internal/domain/services"
+	"github.com/douglasdennys45/go/internal/infrastructure/factories/infrastructure/database/postgres/repositories"
 )
 
 func MountGetUser() services.GetUserInterface {

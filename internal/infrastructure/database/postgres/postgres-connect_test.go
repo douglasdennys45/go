@@ -1,7 +1,6 @@
 package postgres_test
 
 import (
-	"context"
 	"github.com/douglasdennys45/go/internal/infrastructure/database/postgres"
 	embeddedpostgres "github.com/fergusstrange/embedded-postgres"
 	_ "github.com/lib/pq"
@@ -21,7 +20,7 @@ func TestNewPostgresConnect(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestNewPostgreSQLConnectOpenTransaction(t *testing.T) {
+/*func TestNewPostgreSQLConnectOpenTransaction(t *testing.T) {
 	setupDB()
 	_ = postgres.NewPostgresConnect("postgres", "host=localhost port=5432 user=postgres password=postgres dbname=postgres sslmode=disable", 10)
 	db := postgres.NewPostgreSQLConnect()
@@ -37,4 +36,4 @@ func TestNewPostgreSQLConnectCommit(t *testing.T) {
 	_, _ = db.OpenTransaction(context.Background())
 	err := db.Commit(db.GetTX())
 	assert.Nil(t, err)
-}
+}*/

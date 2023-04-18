@@ -1,6 +1,7 @@
 package env
 
 import (
+	"fmt"
 	"github.com/spf13/viper"
 )
 
@@ -11,6 +12,7 @@ type config struct {
 }
 
 func NewEnv(path string) (*config, error) {
+	fmt.Println("path", path)
 	var cfg *config
 	viper.SetConfigName("config")
 	viper.SetConfigType("env")

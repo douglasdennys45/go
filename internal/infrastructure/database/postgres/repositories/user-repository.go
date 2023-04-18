@@ -1,8 +1,6 @@
 package repositories
 
 import (
-	"fmt"
-
 	gopostgres "github.com/douglasdennys45/go-postgres/repositories"
 	"github.com/douglasdennys45/go/internal/domain/entities"
 	"github.com/douglasdennys45/go/internal/domain/repositories"
@@ -18,9 +16,7 @@ func NewUserRepository() repositories.UserRepo {
 
 func (u *userRepository) Create(user *entities.User) error {
 	tx := postgres.NewPostgreSQLConnect().GetTX()
-	fmt.Println("tx: ", tx)
 	repo := gopostgres.NewPostgresRepository(tx)
-	fmt.Println("repo: ", repo)
 	_, err := repo.Insert(postgres.NewPostgreSQLConnect().GetContext(), "INSERT INTO users (id, name, email, password, createdAt, updatedAt) VALUES ($1, $2, $3, $4, $5, $6)", user.ID, user.Name, user.Email, user.Password, user.CreatedAt, user.UpdatedAt)
 	return err
 }

@@ -9,15 +9,15 @@ type AddUserInterface interface {
 	Execute(name, email, password string) error
 }
 
-type AddUser struct {
+type addUser struct {
 	userRepo repositories.UserRepo
 }
 
 func NewAddUser(userRepo repositories.UserRepo) AddUserInterface {
-	return &AddUser{userRepo: userRepo}
+	return &addUser{userRepo: userRepo}
 }
 
-func (a *AddUser) Execute(name, email, password string) error {
+func (a *addUser) Execute(name, email, password string) error {
 	user, err := entities.NewUser(name, email, password)
 	if err != nil {
 		return err

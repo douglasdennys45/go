@@ -3,8 +3,6 @@ package postgres
 import (
 	"context"
 	"database/sql"
-	"fmt"
-
 	gopostgres "github.com/douglasdennys45/go-postgres"
 	"github.com/douglasdennys45/go/internal/infrastructure/controllers"
 	_ "github.com/lib/pq"
@@ -28,7 +26,6 @@ func NewPostgreSQLConnect() controllers.DBTransaction {
 
 func NewPostgresConnect(driver, dsn string, pool int) error {
 	conn := gopostgres.NewPostgresConnection()
-	fmt.Println("conn: ", conn)
 	return conn.Connect(driver, dsn, pool)
 }
 

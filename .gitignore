@@ -5,3 +5,4 @@ bin
 # files
 api.http
 .env
+coverage.*

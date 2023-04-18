@@ -9,15 +9,15 @@ type GetUserInterface interface {
 	Execute(id string) (*entities.User, error)
 }
 
-type GetUser struct {
+type getUser struct {
 	userRepo repositories.UserRepo
 }
 
 func NewGetUser(userRepo repositories.UserRepo) GetUserInterface {
-	return &GetUser{userRepo: userRepo}
+	return &getUser{userRepo: userRepo}
 }
 
-func (a *GetUser) Execute(id string) (*entities.User, error) {
+func (a *getUser) Execute(id string) (*entities.User, error) {
 	user, err := a.userRepo.GetByID(id)
 	return user, err
 }

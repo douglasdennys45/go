@@ -1,4 +1,7 @@
-run: 
+test:
+	go test ./... `go list ./... | grep -v ./internal/infrastructure/middlewares | grep -v ./internal/infrastructure/factories`
+
+run:
 	go run cmd/server/api.go
 
 generate:
